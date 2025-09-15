@@ -2,7 +2,7 @@
 A curated collection of data science projects while completing a MSc in Applied Data Science @ The University of Chicago
 
 ## 🔗 GitHub Website
-Visit the portfolio at: [bonjourdave.github.io](https://github.com/bonjourdave/bonjourdave.github.io)
+Visit the portfolio at: [bonjourdave.github.io](https://bonjourdave.github.io)
 
 ## 🛠️ Built With
 - Quarto
