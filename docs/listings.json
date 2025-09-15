@@ -1,0 +1,11 @@
+[
+  {
+    "listing": "/projects.html",
+    "items": [
+      "/projects/machine_learning/netflix_part1_motivation.html",
+      "/projects/machine_learning/netflix_part3_mlflow.html",
+      "/projects/machine_learning/netflix_part4_shap_explainer.html",
+      "/projects/machine_learning/netflix_part2_eda.html"
+    ]
+  }
+]
