@@ -155,7 +155,7 @@ Task 1 (foundation)
   - Apply dark-mode-aware colors using Tailwind's `dark:` variant
   - _Requirements: 2.4_
 
-- [ ] 9.2 Truncate long descriptions to three lines
+- [x] 9.2 Truncate long descriptions to three lines
   - Apply CSS `line-clamp-3` (Tailwind utility) to the description paragraph so all cards share a consistent height
   - No JavaScript required — the truncation is purely presentational via CSS `overflow: hidden` + `-webkit-line-clamp`
   - _Requirements: 2.6_

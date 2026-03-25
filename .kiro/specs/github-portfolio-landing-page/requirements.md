@@ -34,10 +34,12 @@ The system subject used throughout this document is **Portfolio Site**.
 1. The Portfolio Site shall render a project gallery section containing one card per featured repository.
 2. The Portfolio Site shall display each project card with at minimum: the repository name, a short description, the primary language, and a direct link to the repository on GitHub.
 3. Where a repository has a social preview image (Open Graph image) available, the Portfolio Site shall display it as a thumbnail on the project card.
-4. If a repository has no description, the Portfolio Site shall render a placeholder string (e.g., "No description provided") rather than an empty element.
-5. The Portfolio Site shall render repository links as accessible anchor elements that open in a new tab with `rel="noopener noreferrer"`.
-6. The Portfolio Site shall display projects in a responsive grid layout that adapts gracefully from mobile (single column) to desktop (multi-column) viewports.
-7. The Portfolio Site build system shall exclude the repository that hosts the portfolio site itself (i.e. the `PUBLIC_GITHUB_USERNAME`.github.io repo) from the project gallery.
+4. If a repository has no social preview image, the Portfolio Site shall display a placeholder visual (e.g., a styled block showing the repository name) in the thumbnail slot rather than leaving it empty.
+5. If a repository has no description, the Portfolio Site shall render a placeholder string (e.g., "No description provided") rather than an empty element.
+6. The Portfolio Site shall truncate repository descriptions that exceed approximately three lines of text (≈ 150 characters), appending an ellipsis ("…") so that all cards maintain a consistent height.
+7. The Portfolio Site shall render repository links as accessible anchor elements that open in a new tab with `rel="noopener noreferrer"`.
+8. The Portfolio Site shall display projects in a responsive grid layout that adapts gracefully from mobile (single column) to desktop (multi-column) viewports.
+9. The Portfolio Site build system shall exclude the repository that hosts the portfolio site itself (i.e. the `PUBLIC_GITHUB_USERNAME`.github.io repo) from the project gallery.
 
 ---
 
