@@ -14,25 +14,25 @@ Task 1 (foundation)
 
 ---
 
-- [ ] 1. Set up the Astro project foundation
+- [x] 1. Set up the Astro project foundation
 
-- [ ] 1.1 Configure Astro with Tailwind CSS v4
+- [x] 1.1 Configure Astro with Tailwind CSS v4
   - Wire the `@tailwindcss/vite` plugin into the Astro build configuration (as a Vite plugin, not an Astro integration)
   - Confirm `npm run dev` starts the dev server and `npm run build` completes without errors
   - Verify installed dependencies match the lockfile (`npm ci` should succeed from a clean state)
   - _Requirements: 4.1, 4.3, 6.6_
 
-- [ ] 1.2 Create the global styles entry point
+- [x] 1.2 Create the global styles entry point
   - Add a CSS file that imports Tailwind's base layers with `@import "tailwindcss"`
   - No additional Tailwind config file is needed; dark-mode variants work automatically via `prefers-color-scheme`
   - _Requirements: 6.4, 6.5, 6.6_
 
-- [ ] 1.3 Enable TypeScript strict mode
+- [x] 1.3 Enable TypeScript strict mode
   - Set `strict: true` (or Astro's strictest preset) in the project's TypeScript configuration
   - Ensure the Astro type-checking environment uses strict null checks
   - _Requirements: 4.1_
 
-- [ ] 1.4 Add a placeholder favicon
+- [x] 1.4 Add a placeholder favicon
   - Place a favicon file in the static assets directory so the build references a real file rather than a 404
   - _Requirements: 6.7_
 
