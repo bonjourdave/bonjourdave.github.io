@@ -149,7 +149,7 @@ Task 1 (foundation)
 - [ ] 8. Verify quality and accessibility
   _(Starts after Task 7 completes)_
 
-- [ ] 8.1 Check responsive behavior and dark mode
+- [x] 8.1 Check responsive behavior and dark mode
   - Preview the built site and verify the layout renders correctly at 320 px, 768 px, and 1440 px viewport widths (single column → two column → three column)
   - Toggle the OS/browser dark mode preference and confirm the color palette switches automatically without a page reload or JavaScript
   - Tab through the entire page with keyboard only and confirm all links and interactive elements are reachable and visually focused
