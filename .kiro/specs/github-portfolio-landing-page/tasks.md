@@ -38,20 +38,21 @@ Task 1 (foundation)
 
 ---
 
-- [ ] 2. Build the GitHub API data utility
+- [x] 2. Build the GitHub API data utility
 
-- [ ] 2.1 Implement user profile fetching
+- [x] 2.1 Implement user profile fetching
   - Create a build-time function that retrieves the owner's display name, bio, avatar image URL, GitHub profile URL, and optional blog/website URL from the GitHub Users API endpoint
   - Authenticate every request using the PAT passed as an argument; use the `Authorization: Bearer` header format
   - Never include the PAT value in error messages, return values, or logs
   - Throw a descriptive error (including the HTTP status code) if the API returns a non-success response, so the build fails loudly
   - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 3.6_
 
-- [ ] 2.2 Implement public repository fetching with filtering and sorting
+- [x] 2.2 Implement public repository fetching with filtering and sorting
   - Create a build-time function that retrieves the owner's public repositories, sorted by last-updated date (newest first), requesting up to 100 results per page
   - Filter the response to exclude forked repositories, then cap the final list at 12 entries
   - Map each entry to the fields needed by the project card: name, description, primary language, repository URL, and social preview image URL — all of which may be null except name and URL
   - Throw a descriptive error on any API failure
+  - Note: `social_preview_image_url` is not returned by the GitHub REST API repos endpoint; field is set to `null` and will gracefully render text-only cards
   - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 3.6_
 
 ---
