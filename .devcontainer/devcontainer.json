@@ -79,6 +79,6 @@
   // ─── Lifecycle hooks ───────────────────────────────────────────────────────
   // Runs once after the container is first built.
   // Installs cc-sdd Kiro-style slash commands into .claude/commands/
-  // so /kiro:spec-init etc. are available the moment you open Claude Code.
-  "postCreateCommand": "npx cc-sdd@latest --claude --lang en --yes && echo '✅ cc-sdd SDD commands installed'"
+  // so /kiro:spec-init, /kiro:steering etc. are available the moment you open Claude Code.
+  "postCreateCommand": "npx cc-sdd@latest --claude --lang en --yes && git config --local commit.template .gitmessage && echo '✅ cc-sdd installed, commit template configured'"
 }

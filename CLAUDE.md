@@ -65,18 +65,22 @@ git merge feat/<spec-name>
 git push  # triggers GitHub Pages deploy
 ```
 
-**Commit after every completed task** — before moving to the next task, commit with:
-```
-git commit -m "task: <task-name>"
+**Commit after every completed task** — before moving to the next task, commit using
+the repo's commit template (never use `git commit -m` as it bypasses the template):
+
+```bash
+git commit
 ```
 
-This is a hard rule, not a suggestion. If the build is broken, fix it before committing.
-Do not batch multiple tasks into one commit.
+The editor will open with the template pre-filled. Write the subject line in the format
+`task: <task-name>` and leave the `Co-authored-by` trailer intact. Every commit must
+include this trailer — it is a hard rule, not a suggestion. If the build is broken, fix
+it before committing. Do not batch multiple tasks into one commit.
 
 ### Ground rules for Claude Code
 
 - **Plan first.** Use `Shift+Tab` (Plan Mode) before any non-trivial implementation.
-- **Commit after every task.** Format: `git commit -m "task: <task-name>"`. No exceptions.
+- **Commit after every task.** Use `git commit` (not `-m`) to preserve the co-author template. No exceptions.
 - **Never break the build.** Run `npm run build` to verify before committing.
 - **Subagents for parallel tasks only.** Only spawn subagents for tasks with no dependency
   on each other. Sequential tasks must run in order. Check the spec-tasks doc for dependencies
