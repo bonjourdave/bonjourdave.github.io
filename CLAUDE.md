@@ -15,7 +15,7 @@ gallery of GitHub projects with short descriptions and links to the actual repos
 **Stack:**
 - Framework: Astro (static output, zero JS by default)
 - Styling: Tailwind CSS v4 via `@tailwindcss/vite` Vite plugin (not the deprecated `@astrojs/tailwind` integration)
-- Data source: GitHub REST API (fetched at build time via `GITHUB_PAT`)
+- Data source: GitHub REST API (fetched at build time via `GH_PAT`)
 - Deployment: GitHub Pages at `username.github.io` (auto-deploys on push to `main`)
 
 **Repo layout:**
@@ -115,7 +115,7 @@ Do not batch multiple tasks into one commit.
 
 | Variable | Where set | Purpose |
 |---|---|---|
-| `GITHUB_PAT` | Host shell / `.env` / Actions secret | Fine-grained PAT (this repo only): GitHub API access for MCP + build-time repo fetch |
+| `GH_PAT` | Host shell / `.env` / Actions secret | Fine-grained PAT (this repo only): GitHub API access for MCP + build-time repo fetch |
 | `PUBLIC_GITHUB_USERNAME` | `.env` | Your GitHub username (used in Astro data fetching) |
 
 `.env` is gitignored. See `.env.example` for the template.
@@ -138,7 +138,7 @@ Build command: `npm run build`. Output directory: `dist`.
 Repo must be named `<username>.github.io` for the clean root URL.
 GitHub Pages source must be set to "GitHub Actions" in repo Settings → Pages.
 
-`GITHUB_PAT` and `PUBLIC_GITHUB_USERNAME` must be set as Actions secrets in the repo
+`GH_PAT` and `PUBLIC_GITHUB_USERNAME` must be set as Actions secrets in the repo
 (Settings → Secrets and variables → Actions) for the build to succeed.
 
 ---

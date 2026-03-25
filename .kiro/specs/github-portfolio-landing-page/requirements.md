@@ -46,11 +46,11 @@ The system subject used throughout this document is **Portfolio Site**.
 
 #### Acceptance Criteria
 
-1. When the build process runs, the Portfolio Site build system shall fetch the owner's public repositories from the GitHub REST API using the `GITHUB_PAT` environment variable for authentication.
+1. When the build process runs, the Portfolio Site build system shall fetch the owner's public repositories from the GitHub REST API using the `GH_PAT` environment variable for authentication.
 2. The Portfolio Site build system shall read the target GitHub username from the `PUBLIC_GITHUB_USERNAME` environment variable.
 3. The Portfolio Site build system shall fetch repository metadata including: name, description, primary language, HTML URL, and Open Graph / social preview image URL.
 4. If the GitHub API returns an error during the build, the Portfolio Site build system shall fail the build with a descriptive error message rather than producing a silently empty gallery.
-5. The Portfolio Site shall never expose the `GITHUB_PAT` value in any rendered HTML, JavaScript bundle, or client-accessible resource.
+5. The Portfolio Site shall never expose the `GH_PAT` value in any rendered HTML, JavaScript bundle, or client-accessible resource.
 6. While the build is running, the Portfolio Site build system shall respect GitHub API rate limits by using authenticated requests (authenticated requests receive a higher rate limit than anonymous ones).
 
 ---
@@ -110,4 +110,4 @@ The system subject used throughout this document is **Portfolio Site**.
 3. When the build produces output in the `dist/` directory, the CI/CD workflow shall deploy that directory to GitHub Pages.
 4. If the `npm run build` command exits with a non-zero code, the CI/CD workflow shall fail and not deploy.
 5. The CI/CD workflow shall run `npm audit --audit-level=high --omit=dev` and fail the build if any high-severity vulnerabilities are found in production dependencies.
-6. The Portfolio Site build system shall require `GITHUB_PAT` and `PUBLIC_GITHUB_USERNAME` to be available as CI secrets at build time.
+6. The Portfolio Site build system shall require `GH_PAT` and `PUBLIC_GITHUB_USERNAME` to be available as CI secrets at build time.

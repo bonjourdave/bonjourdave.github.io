@@ -28,7 +28,7 @@ Tailwind utility classes only. No hand-written CSS unless Tailwind genuinely can
 Default is zero JS. If interactivity is needed, use an Astro island (`client:load`, `client:visible`, etc.) and justify the addition explicitly.
 
 ### Environment Variables
-- Server-only secrets (e.g. `GITHUB_PAT`) are never exposed to the browser.
+- Server-only secrets (e.g. `GH_PAT`) are never exposed to the browser.
 - Variables prefixed `PUBLIC_` are safe for browser use; all others are build-time only.
 
 ## Development Environment

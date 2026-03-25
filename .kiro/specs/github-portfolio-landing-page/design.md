@@ -73,7 +73,7 @@ graph TB
 | Framework | Astro 6 | SSG, file routing, component model | Static output mode |
 | Styling | Tailwind CSS v4 + `@tailwindcss/vite` | All visual design; dark mode via `dark:` variant | No `tailwind.config.*` needed in v4 |
 | Language | TypeScript strict | All frontmatter and utility code | No `any`; strict null checks |
-| Data source | GitHub REST API v3 | User profile + public repos at build time | Authenticated with `GITHUB_PAT` |
+| Data source | GitHub REST API v3 | User profile + public repos at build time | Authenticated with `GH_PAT` |
 | Runtime | Node.js 22 | Build process | Matches CI environment |
 | CI/CD | GitHub Actions + `withastro/action@v3` | Build, audit, deploy to GitHub Pages | Secrets injected as env vars |
 
@@ -122,7 +122,7 @@ Key decision: if either API call returns an error, `github.ts` throws and the bu
 | 2.4 | Card: placeholder if no description | `ProjectCard.astro` | `ProjectCardProps.description` nullable | Null coalesce |
 | 2.5 | Card links: new tab + noopener | `ProjectCard.astro` | `ProjectCardProps.htmlUrl` | Rendered anchor attrs |
 | 2.6 | Gallery: responsive grid | `Gallery.astro` | Tailwind grid classes | CSS grid |
-| 3.1 | Fetch repos with `GITHUB_PAT` | `github.ts` | `fetchUserRepos` | Build-time fetch |
+| 3.1 | Fetch repos with `GH_PAT` | `github.ts` | `fetchUserRepos` | Build-time fetch |
 | 3.2 | Read username from env | `github.ts` | `import.meta.env` | Env var access |
 | 3.3 | Fetch name, description, language, url, preview | `github.ts` | `GitHubRepo` type | API response mapping |
 | 3.4 | Fail build on API error | `github.ts` | Error throw | CI failure |
@@ -181,7 +181,7 @@ Key decision: if either API call returns an error, `github.ts` throws and the bu
 - Single responsibility: HTTP calls to the GitHub REST API and response → typed value mapping.
 - Throws a descriptive `Error` (with HTTP status) on any non-2xx response; never returns partial or empty data silently.
 - Filters out forked repositories and sorts by `updated_at` descending; caps result at 12 repos.
-- The `GITHUB_PAT` value is read from `import.meta.env` inside the calling page (`index.astro`), not from inside this module, so the module is pure and testable with injected credentials.
+- The `GH_PAT` value is read from `import.meta.env` inside the calling page (`index.astro`), not from inside this module, so the module is pure and testable with injected credentials.
 
 **Dependencies**
 - Inbound: `index.astro` — calls both fetch functions with username and PAT (P0)
@@ -232,7 +232,7 @@ export async function fetchUserRepos(
 
 - Preconditions: `username` is non-empty; `pat` is a valid fine-grained PAT with `Contents: read` and `Metadata: read`.
 - Postconditions: `fetchUserProfile` returns a `GitHubUser`; `fetchUserRepos` returns a non-forked, sorted, capped `GitHubRepo[]`.
-- Invariants: Both functions throw `GitHubApiError` (with `status`) on API failures. The `GITHUB_PAT` value never appears in any return value or thrown message.
+- Invariants: Both functions throw `GitHubApiError` (with `status`) on API failures. The `GH_PAT` value never appears in any return value or thrown message.
 
 **Implementation Notes**
 - Integration: Called with `await` in `index.astro` frontmatter; both calls are sequential (profile then repos). They may be parallelised with `Promise.all` in a future optimisation.
@@ -279,7 +279,7 @@ interface Props {
 | Requirements | 1.4, 3.1–3.6 |
 
 **Implementation Notes**
-- Reads `import.meta.env.GITHUB_PAT` and `import.meta.env.PUBLIC_GITHUB_USERNAME` in the frontmatter.
+- Reads `import.meta.env.GH_PAT` and `import.meta.env.PUBLIC_GITHUB_USERNAME` in the frontmatter.
 - Calls `fetchUserProfile` and `fetchUserRepos` from `github.ts`; passes results as props to `Bio` and `Gallery`.
 - Wraps content in `BaseLayout` with appropriate `title`, `description`, and `ogImage` values.
 - Render order in markup: `<Bio>` above `<Gallery>` (1.4).
@@ -378,7 +378,7 @@ Fail-fast at build time; graceful degradation in the browser for optional UI ele
 
 **Build-Time (GitHub API errors)**
 - HTTP 4xx/5xx from GitHub API → `github.ts` throws `GitHubApiError` with status code and message → `index.astro` frontmatter propagates the throw → build process exits non-zero → CI pipeline fails with visible error output.
-- Missing env vars (`GITHUB_PAT`, `PUBLIC_GITHUB_USERNAME`) → `undefined` passed to fetch → `401 Unauthorized` from API → caught and rethrown as above.
+- Missing env vars (`GH_PAT`, `PUBLIC_GITHUB_USERNAME`) → `undefined` passed to fetch → `401 Unauthorized` from API → caught and rethrown as above.
 
 **Browser (graceful degradation)**
 - `social_preview_image_url: null` → `ProjectCard` hides thumbnail slot; layout remains intact.
@@ -416,7 +416,7 @@ Fail-fast at build time; graceful degradation in the browser for optional UI ele
 
 ## Security Considerations
 
-- `GITHUB_PAT` is accessed via `import.meta.env.GITHUB_PAT` (no `PUBLIC_` prefix) — Astro strips it from the browser bundle automatically.
+- `GH_PAT` is accessed via `import.meta.env.GH_PAT` (no `PUBLIC_` prefix) — Astro strips it from the browser bundle automatically.
 - Fine-grained PAT scoped to this repository only with minimum permissions (`Contents: read`, `Metadata: read`) — matches existing `.env.example` guidance.
 - All external links use `rel="noopener noreferrer"` to prevent tab-napping.
 - `npm audit --audit-level=high --omit=dev` in CI gates every deploy against known production vulnerabilities.

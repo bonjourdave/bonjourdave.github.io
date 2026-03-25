@@ -4,12 +4,12 @@ import Bio from '../components/Bio.astro';
 import Gallery from '../components/Gallery.astro';
 import { fetchUserProfile, fetchUserRepos } from '../utils/github.ts';
 
-const pat = import.meta.env.GITHUB_PAT;
+const pat = import.meta.env.GH_PAT;
 const username = import.meta.env.PUBLIC_GITHUB_USERNAME;
 
 if (!pat) {
   throw new Error(
-    'GITHUB_PAT environment variable is not set. ' +
+    'GH_PAT environment variable is not set. ' +
     'Add it to .env (local) or GitHub Actions secrets (CI).',
   );
 }
