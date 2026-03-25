@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Bio from '../components/Bio.astro';
+import Gallery from '../components/Gallery.astro';
+import CollaborationsSection from '../components/CollaborationsSection.astro';
+import { fetchUserProfile, fetchUserReposGraphQL } from '../utils/github.ts';
+
+const pat = import.meta.env.GH_PAT;
+const username = import.meta.env.PUBLIC_GITHUB_USERNAME;
+
+if (!pat) {
+  throw new Error(
+    'GH_PAT environment variable is not set. ' +
+    'Add it to .env (local) or GitHub Actions secrets (CI).',
+  );
+}
+if (!username) {
+  throw new Error(
+    'PUBLIC_GITHUB_USERNAME environment variable is not set. ' +
+    'Add it to .env (local) or GitHub Actions secrets (CI).',
+  );
+}
+
+const [user, allRepos] = await Promise.all([
+  fetchUserProfile(username, pat),
+  fetchUserReposGraphQL(username, pat),
+]);
+
+const ownedRepos = allRepos.filter((r) => r.owner_login === username).slice(0, 12);
+const collaboratorRepos = allRepos.filter((r) => r.owner_login !== username);
+
+const pageTitle = `${user.name ?? user.login} — Portfolio`;
+const pageDescription =
+  user.bio ??
+  `Open-source projects and work by ${user.name ?? user.login}.`;
+---
+
+<BaseLayout
+  title={pageTitle}
+  description={pageDescription}
+  ogImage={user.avatar_url}
+>
+  <Bio user={user} />
+  <Gallery repos={ownedRepos} />
+  <CollaborationsSection repos={collaboratorRepos} />
+</BaseLayout>

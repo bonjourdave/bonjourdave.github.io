@@ -4,6 +4,9 @@
   "description": "Personal portfolio landing page built with Astro + Tailwind, deployed to GitHub Pages at `username.github.io`. Developed using Claude Code inside a VSCode devcontainer with spec-driven development (SDD).",
   "main": "index.js",
   "scripts": {
+    "dev": "astro dev --host",
+    "build": "astro build",
+    "preview": "astro preview",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -20,6 +23,6 @@
   "dependencies": {
     "@tailwindcss/vite": "4.2.2",
     "astro": "^6.0.8",
-    "tailwindcss": "3.4.19"
+    "tailwindcss": "4.2.2"
   }
 }

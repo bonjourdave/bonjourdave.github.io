@@ -33,7 +33,7 @@
   // ─── Environment ───────────────────────────────────────────────────────────
   "containerEnv": {
     "CLAUDE_CONFIG_DIR": "/home/node/.claude",
-    "GITHUB_PAT": "${localEnv:GITHUB_PAT}"
+    "GH_PAT": "${localEnv:GH_PAT}"
   },
 
   // ─── Container user ────────────────────────────────────────────────────────

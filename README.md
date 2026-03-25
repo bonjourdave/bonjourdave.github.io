@@ -64,7 +64,7 @@ Fine-grained PATs scope access to a single repo, so a leaked token can't touch a
 Add it to your host shell (put this in `~/.bashrc` or `~/.zshrc`):
 
 ```bash
-export GITHUB_PAT=github_pat_your_token_here
+export GH_PAT=github_pat_your_token_here
 export PUBLIC_GITHUB_USERNAME=your_github_username
 ```
 
@@ -79,7 +79,7 @@ git clone <your-repo-url>
 cd <repo-name>
 
 cp .env.example .env
-# Edit .env and fill in GITHUB_PAT and PUBLIC_GITHUB_USERNAME
+# Edit .env and fill in GH_PAT and PUBLIC_GITHUB_USERNAME
 ```
 
 ---
@@ -201,7 +201,13 @@ code .
 claude
 
 # Astro dev server (separate terminal tab)
-npm run dev   # → http://localhost:4321
+npm run dev   # → http://localhost:4321 on your host browser
+
+# Note: the dev script must include --host (astro dev --host) in package.json.
+# Without it the server binds to 127.0.0.1 inside the container only and the
+# connection hangs — VSCode port forwarding requires 0.0.0.0 to reach it.
+# If not yet in package.json, use: npm run dev -- --host
+# (the -- separator tells npm to pass --host to astro, not to npm itself)
 ```
 
 ---
@@ -227,7 +233,7 @@ The deploy workflow needs these two secrets to build the site.
 
 | Secret name | Value |
 |---|---|
-| `GITHUB_PAT` | Your fine-grained PAT (the `github_pat_` token) |
+| `GH_PAT` | Your fine-grained PAT (the `github_pat_` token) |
 | `PUBLIC_GITHUB_USERNAME` | Your GitHub username |
 
 On every push to `main`, the workflow builds the Astro site and deploys it.
@@ -242,11 +248,11 @@ Your live URL: **`https://<your-username>.github.io`**
   and are readable. The file is the onboarding flag — without it the wizard re-runs.
 
 **GitHub MCP shows "not connected" in `/mcp`**
-→ Verify `GITHUB_PAT` is set in your host shell and was set *before* opening VSCode.
-  Run `echo $GITHUB_PAT` inside the container to confirm it's been injected.
-  If empty, close VSCode, `export GITHUB_PAT=...` in your terminal, then reopen.
+→ Verify `GH_PAT` is set in your host shell and was set *before* opening VSCode.
+  Run `echo $GH_PAT` inside the container to confirm it's been injected.
+  If empty, close VSCode, `export GH_PAT=...` in your terminal, then reopen.
 
-**Astro build fails with "GITHUB_PAT not set"**
+**Astro build fails with "GH_PAT not set"**
 → Add the variable to your `.env` file (for local builds) and to the repo's
   Actions secrets (for CI builds): Settings → Secrets and variables → Actions.
 

@@ -49,7 +49,7 @@ jobs:
           # Settings → Secrets and variables → Actions → New repository secret
           # Token needs: Contents (read), Metadata (read) on this repo only.
           # Used by Astro at build time to fetch your public GitHub repos.
-          GITHUB_PAT: ${{ secrets.GITHUB_PAT }}
+          GH_PAT: ${{ secrets.GH_PAT }}
           PUBLIC_GITHUB_USERNAME: ${{ secrets.PUBLIC_GITHUB_USERNAME }}
 
   deploy:

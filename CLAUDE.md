@@ -15,7 +15,7 @@ gallery of GitHub projects with short descriptions and links to the actual repos
 **Stack:**
 - Framework: Astro (static output, zero JS by default)
 - Styling: Tailwind CSS v4 via `@tailwindcss/vite` Vite plugin (not the deprecated `@astrojs/tailwind` integration)
-- Data source: GitHub REST API (fetched at build time via `GITHUB_PAT`)
+- Data source: GitHub REST API (fetched at build time via `GH_PAT`)
 - Deployment: GitHub Pages at `username.github.io` (auto-deploys on push to `main`)
 
 **Repo layout:**
@@ -72,10 +72,21 @@ the repo's commit template (never use `git commit -m` as it bypasses the templat
 git commit
 ```
 
-The editor will open with the template pre-filled. Write the subject line in the format
-`task: <task-name>` and leave the `Co-authored-by` trailer intact. Every commit must
-include this trailer — it is a hard rule, not a suggestion. If the build is broken, fix
-it before committing. Do not batch multiple tasks into one commit.
+The editor will open with the template pre-filled. Use this exact format:
+
+```
+task: <task-name>
+
+- <what changed and why, one bullet per logical subtask>
+- <keep each bullet concise — one line>
+
+Co-authored-by: Claude <claude@anthropic.com>
+```
+
+No prose paragraphs in the body — bullet points only. Leave a blank line between the
+subject and the bullets, and another blank line before the trailer. Every commit must
+include the co-author trailer. If the build is broken, fix it before committing.
+Do not batch multiple tasks into one commit.
 
 ### Ground rules for Claude Code
 
@@ -104,7 +115,7 @@ it before committing. Do not batch multiple tasks into one commit.
 
 | Variable | Where set | Purpose |
 |---|---|---|
-| `GITHUB_PAT` | Host shell / `.env` / Actions secret | Fine-grained PAT (this repo only): GitHub API access for MCP + build-time repo fetch |
+| `GH_PAT` | Host shell / `.env` / Actions secret | Fine-grained PAT (this repo only): GitHub API access for MCP + build-time repo fetch |
 | `PUBLIC_GITHUB_USERNAME` | `.env` | Your GitHub username (used in Astro data fetching) |
 
 `.env` is gitignored. See `.env.example` for the template.
@@ -127,7 +138,7 @@ Build command: `npm run build`. Output directory: `dist`.
 Repo must be named `<username>.github.io` for the clean root URL.
 GitHub Pages source must be set to "GitHub Actions" in repo Settings → Pages.
 
-`GITHUB_PAT` and `PUBLIC_GITHUB_USERNAME` must be set as Actions secrets in the repo
+`GH_PAT` and `PUBLIC_GITHUB_USERNAME` must be set as Actions secrets in the repo
 (Settings → Secrets and variables → Actions) for the build to succeed.
 
 ---
