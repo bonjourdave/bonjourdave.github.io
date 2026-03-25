@@ -114,10 +114,10 @@ Task 1 (foundation)
 
 ---
 
-- [ ] 6. Build the project gallery layout
+- [x] 6. Build the project gallery layout
   _(Starts after Task 5 completes)_
 
-- [ ] 6.1 Implement the responsive project grid
+- [x] 6.1 Implement the responsive project grid
   - Render one project card per repository entry in a CSS grid
   - Use a single-column layout on mobile (< 640 px), two columns on medium viewports (≥ 640 px), and three columns on wide viewports (≥ 1024 px)
   - Apply dark-mode-compatible section background and spacing using Tailwind's `dark:` variant

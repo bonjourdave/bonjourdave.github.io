@@ -1,0 +1,27 @@
+---
+import type { GitHubRepo } from '../utils/github.ts';
+import ProjectCard from './ProjectCard.astro';
+
+interface Props {
+  repos: GitHubRepo[];
+}
+
+const { repos } = Astro.props;
+---
+
+<section class="py-12 px-6 bg-zinc-50 dark:bg-zinc-900">
+  <div class="max-w-6xl mx-auto">
+    <h2 class="text-xl font-semibold mb-8
+               text-zinc-900 dark:text-zinc-100">
+      Projects
+    </h2>
+    <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 list-none p-0"
+        role="list">
+      {repos.map((repo) => (
+        <li>
+          <ProjectCard repo={repo} />
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>

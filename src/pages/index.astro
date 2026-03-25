@@ -1,7 +1,7 @@
 ---
 // Stub page — full implementation in Task 7
 import Bio from '../components/Bio.astro';
-import ProjectCard from '../components/ProjectCard.astro';
+import Gallery from '../components/Gallery.astro';
 import type { GitHubUser, GitHubRepo } from '../utils/github.ts';
 
 const stubUser: GitHubUser = {
@@ -45,9 +45,7 @@ const stubRepos: GitHubRepo[] = [
   <body class="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100">
     <main class="min-h-screen">
       <Bio user={stubUser} />
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-6 pb-12 max-w-4xl mx-auto">
-        {stubRepos.map((repo) => <ProjectCard repo={repo} />)}
-      </div>
+      <Gallery repos={stubRepos} />
     </main>
   </body>
 </html>
