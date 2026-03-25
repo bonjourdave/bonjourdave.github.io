@@ -1,7 +1,8 @@
 ---
 // Stub page — full implementation in Task 7
 import Bio from '../components/Bio.astro';
-import type { GitHubUser } from '../utils/github.ts';
+import ProjectCard from '../components/ProjectCard.astro';
+import type { GitHubUser, GitHubRepo } from '../utils/github.ts';
 
 const stubUser: GitHubUser = {
   login: 'bonjourdave',
@@ -11,6 +12,29 @@ const stubUser: GitHubUser = {
   html_url: 'https://github.com/bonjourdave',
   blog: null,
 };
+
+const stubRepos: GitHubRepo[] = [
+  {
+    name: 'example-repo',
+    description: 'An example project.',
+    language: 'TypeScript',
+    html_url: 'https://github.com/bonjourdave/example-repo',
+    social_preview_image_url: null,
+    stargazers_count: 5,
+    fork: false,
+    updated_at: '2026-01-01T00:00:00Z',
+  },
+  {
+    name: 'no-desc-repo',
+    description: null,
+    language: null,
+    html_url: 'https://github.com/bonjourdave/no-desc-repo',
+    social_preview_image_url: null,
+    stargazers_count: 0,
+    fork: false,
+    updated_at: '2025-12-01T00:00:00Z',
+  },
+];
 ---
 <html lang="en">
   <head>
@@ -21,6 +45,9 @@ const stubUser: GitHubUser = {
   <body class="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100">
     <main class="min-h-screen">
       <Bio user={stubUser} />
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-6 pb-12 max-w-4xl mx-auto">
+        {stubRepos.map((repo) => <ProjectCard repo={repo} />)}
+      </div>
     </main>
   </body>
 </html>

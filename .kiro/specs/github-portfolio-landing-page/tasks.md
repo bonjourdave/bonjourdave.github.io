@@ -94,10 +94,10 @@ Task 1 (foundation)
 
 ---
 
-- [ ] 5. (P) Build the project card component
+- [x] 5. (P) Build the project card component
   _(Can start after Task 2 completes; runs in parallel with Task 4 — different component files)_
 
-- [ ] 5.1 Render core card content
+- [x] 5.1 Render core card content
   - Display the repository name as the card heading
   - Display the description text; when the description is null, render "No description provided" as a placeholder
   - Display the primary language badge when the language field is non-null; omit it entirely when null
@@ -105,7 +105,7 @@ Task 1 (foundation)
   - Ensure the clickable area meets the 44 × 44 px minimum touch target on mobile
   - _Requirements: 2.2, 2.4, 2.5, 5.5, 6.3_
 
-- [ ] 5.2 Add conditional social preview thumbnail
+- [x] 5.2 Add conditional social preview thumbnail
   - When `social_preview_image_url` is non-null, display it as a thumbnail image above the card content
   - When `social_preview_image_url` is null, render nothing in the thumbnail slot — do not emit a broken `<img>` element
   - Include a meaningful `alt` attribute that identifies the repository
