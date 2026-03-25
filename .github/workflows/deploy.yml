@@ -44,6 +44,8 @@ jobs:
 
       - name: Build Astro site
         uses: withastro/action@v3
+        with:
+          node-version: 22
         env:
           # Fine-grained PAT injected from GitHub repo secrets.
           # Settings → Secrets and variables → Actions → New repository secret
