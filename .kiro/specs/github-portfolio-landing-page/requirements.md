@@ -37,6 +37,7 @@ The system subject used throughout this document is **Portfolio Site**.
 4. If a repository has no description, the Portfolio Site shall render a placeholder string (e.g., "No description provided") rather than an empty element.
 5. The Portfolio Site shall render repository links as accessible anchor elements that open in a new tab with `rel="noopener noreferrer"`.
 6. The Portfolio Site shall display projects in a responsive grid layout that adapts gracefully from mobile (single column) to desktop (multi-column) viewports.
+7. The Portfolio Site build system shall exclude the repository that hosts the portfolio site itself (i.e. the `PUBLIC_GITHUB_USERNAME`.github.io repo) from the project gallery.
 
 ---
 

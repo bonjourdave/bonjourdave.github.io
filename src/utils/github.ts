@@ -100,8 +100,10 @@ export async function fetchUserRepos(
 
   const data = (await response.json()) as GitHubApiRepo[];
 
+  const portfolioRepoName = `${username}.github.io`;
+
   return data
-    .filter((repo) => !repo.fork)
+    .filter((repo) => !repo.fork && repo.name !== portfolioRepoName)
     .sort(
       (a, b) =>
         new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime(),
