@@ -126,10 +126,10 @@ Task 1 (foundation)
 
 ---
 
-- [ ] 7. Compose the landing page and wire all data
+- [x] 7. Compose the landing page and wire all data
   _(Starts after Tasks 3, 4, and 6 are all complete)_
 
-- [ ] 7.1 Fetch GitHub data at build time and pass to components
+- [x] 7.1 Fetch GitHub data at build time and pass to components
   - In the page's build-time code, read the GitHub username from `PUBLIC_GITHUB_USERNAME` and the PAT from `GITHUB_PAT` using the Astro environment variable API
   - Call the user profile fetch and repos fetch functions; await both results
   - Pass the profile data to the bio component and the repository list to the gallery component
@@ -137,7 +137,7 @@ Task 1 (foundation)
   - Verify that `npm run build` completes without errors against the real GitHub API when the environment variables are set
   - _Requirements: 3.1, 3.2, 3.4, 3.5, 3.6, 4.1, 4.3, 7.1, 7.2, 7.3, 7.4_
 
-- [ ] 7.2 Confirm the build output is correct and secure
+- [x] 7.2 Confirm the build output is correct and secure
   - Inspect the rendered HTML in `dist/` and verify the bio section appears above the gallery
   - Confirm the `GITHUB_PAT` value is absent from all output files (HTML, any emitted CSS/JS)
   - Confirm zero JavaScript files are emitted for the main page bundle
