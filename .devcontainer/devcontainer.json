@@ -1,0 +1,84 @@
+{
+  "name": "Claude Code — Spec Driven Dev",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+
+  // ─── Features ──────────────────────────────────────────────────────────────
+  // Anthropic's official Claude Code devcontainer feature — installs the CLI
+  // and configures bypassPermissions mode (safe inside this container sandbox).
+  // gh CLI — for git operations (push/pull/PR) inside the container.
+  "features": {
+    "ghcr.io/anthropics/devcontainer-features/claude-code:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {
+      "version": "latest"
+    }
+  },
+
+  // ─── Auth persistence ──────────────────────────────────────────────────────
+  // Bind-mount ~/.claude from the host so you only do the OAuth browser dance
+  // once and credentials survive all container rebuilds.
+  //
+  // ${localEnv:HOME}${localEnv:USERPROFILE} is a cross-platform pattern:
+  // on Linux HOME resolves and USERPROFILE is empty — giving /home/<user>/.claude
+  // on Windows the reverse applies — either way it resolves correctly.
+  //
+  // No need to mount ~/.claude.json separately — the onboarding flag lives
+  // inside ~/.claude/ and is written by Claude Code on first login.
+  "mounts": [
+    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.claude,target=/home/node/.claude,type=bind,consistency=cached"
+  ],
+
+  // ─── Environment ───────────────────────────────────────────────────────────
+  "containerEnv": {
+    "CLAUDE_CONFIG_DIR": "/home/node/.claude",
+    "GITHUB_PAT": "${localEnv:GITHUB_PAT}"
+  },
+
+  // ─── Container user ────────────────────────────────────────────────────────
+  // node is the default non-root user in mcr.microsoft.com/devcontainers/javascript-node
+  "remoteUser": "node",
+  "containerUser": "node",
+
+  // ─── VSCode customisations ─────────────────────────────────────────────────
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "Anthropic.claude-code",
+        "astro-build.astro-vscode",
+        "bradlc.vscode-tailwindcss",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "yzhang.markdown-all-in-one",
+        "mikestead.dotenv",
+        "eamodio.gitlens"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "[astro]": {
+          "editor.defaultFormatter": "astro-build.astro-vscode"
+        },
+        "github.gitAuthentication": false,
+        "git.terminalAuthentication": false
+      }
+    }
+  },
+
+  // ─── Ports ─────────────────────────────────────────────────────────────────
+  "forwardPorts": [4321],
+  "portsAttributes": {
+    "4321": {
+      "label": "Astro Dev Server",
+      "onAutoForward": "notify"
+    }
+  },
+
+  // ─── Lifecycle hooks ───────────────────────────────────────────────────────
+  // Runs once after the container is first built.
+  // Installs cc-sdd Kiro-style slash commands into .claude/commands/
+  // so /kiro:spec-init etc. are available the moment you open Claude Code.
+  "postCreateCommand": "npx cc-sdd@latest --claude --lang en --yes && echo '✅ cc-sdd SDD commands installed'"
+}

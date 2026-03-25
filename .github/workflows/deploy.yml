@@ -1,0 +1,64 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  # Allow manual deploys from the Actions tab
+  workflow_dispatch:
+
+# Required for the withastro/action to deploy to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Only allow one concurrent deployment; cancel in-progress runs if a new
+# push lands before the current deploy finishes.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        # npm ci installs from the lockfile exactly — never resolves new versions.
+        # .npmrc sets ignore-scripts=true so no postinstall hooks run during install.
+        run: npm ci
+
+      - name: Audit dependencies
+        # Fail the build on high or critical severity vulnerabilities in
+        # production dependencies. --omit=dev skips dev-only noise (e.g. Astro
+        # language server and Wrangler transitive deps flagged in npm audit).
+        run: npm audit --audit-level=high --omit=dev
+
+      - name: Build Astro site
+        uses: withastro/action@v3
+        env:
+          # Fine-grained PAT injected from GitHub repo secrets.
+          # Settings → Secrets and variables → Actions → New repository secret
+          # Token needs: Contents (read), Metadata (read) on this repo only.
+          # Used by Astro at build time to fetch your public GitHub repos.
+          GITHUB_PAT: ${{ secrets.GITHUB_PAT }}
+          PUBLIC_GITHUB_USERNAME: ${{ secrets.PUBLIC_GITHUB_USERNAME }}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+
+# Astro build output
+dist/
+.astro/
+
+# Environment — never commit secrets
+.env
+.env.local
+.env.*.local
+
+# Claude Code session data — local to each developer, not shared
+.claude/settings.local.json
+.claude/projects/
+.claude/todos/
+.claude/statsig/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/settings.json
+*.swp
+*.swo
