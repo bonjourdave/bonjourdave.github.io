@@ -176,3 +176,42 @@ Task 1 (foundation)
   - Run a Lighthouse desktop audit and confirm Accessibility score ≥ 90
   - Address any flagged issues (missing alt text, low-contrast colors, missing ARIA labels)
   - _Requirements: 4.2, 5.4_
+
+---
+
+- [x] 10. Implement GitHub GraphQL API to populate social preview image URLs
+  _(Replaces the REST-based `fetchUserRepos` stub; `social_preview_image_url` is hardcoded to `null` in that function because the REST API does not expose the field. This task wires up the GraphQL endpoint so real Open Graph images are fetched at build time and displayed as card thumbnails.)_
+
+- [x] 10.1 Add the `GraphQLRepoNode` TypeScript interface to `src/utils/github.ts`
+  - Define an internal `GraphQLRepoNode` interface that types the raw node objects returned by the GraphQL response
+  - Fields to include: `name: string`, `description: string | null`, `primaryLanguage: { name: string } | null`, `url: string`, `openGraphImageUrl: string`, `stargazerCount: number`, `isFork: boolean`, `updatedAt: string`
+  - Mark the interface as internal (no `export`) — it is only used inside the utility module
+  - _Requirements: 3.3_
+
+- [x] 10.2 Implement `fetchUserReposGraphQL(username, pat, limit)` in `src/utils/github.ts`
+  - Add an exported async function with signature `fetchUserReposGraphQL(username: string, pat: string, limit?: number): Promise<GitHubRepo[]>` (default `limit` = 12)
+  - POST to `https://api.github.com/graphql` using native `fetch()` — do not add any new npm dependency
+  - Use the `Authorization: Bearer` header (reuse `pat` argument; do not log or expose it)
+  - Send a GraphQL query that retrieves the first 100 repositories for the given `login`, ordered by `UPDATED_AT` descending, selecting: `name`, `description`, `primaryLanguage { name }`, `url`, `openGraphImageUrl`, `stargazerCount`, `isFork`, `updatedAt`
+  - Throw `GitHubApiError` if the HTTP response is not ok (include the status code in the message)
+  - Throw `GitHubApiError` (with status 200) if the response body contains a top-level `errors` array, including the first error message
+  - Filter the result nodes to exclude forks (`isFork === true`) and the `<username>.github.io` repo
+  - Slice the filtered list to `limit` entries
+  - Map each node to `GitHubRepo`: `name`, `description`, `language` ← `primaryLanguage?.name ?? null`, `html_url` ← `url`, `social_preview_image_url` ← `openGraphImageUrl` (empty string should be normalised to `null`), `stargazers_count` ← `stargazerCount`, `fork` ← `isFork`, `updated_at` ← `updatedAt`
+  - _Requirements: 2.3, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6_
+
+- [x] 10.3 Update `src/pages/index.astro` to call `fetchUserReposGraphQL`
+  - Replace the import of `fetchUserRepos` with `fetchUserReposGraphQL`
+  - Update the call site so `fetchUserReposGraphQL` receives `username`, `pat`, and the desired limit
+  - Remove any now-unused import of `fetchUserRepos`
+  - _Requirements: 2.3, 3.1, 3.2_
+
+- [x] 10.4 Verify the build and confirm social preview images appear
+  - Run `npm run build` and confirm it exits with code 0
+  - Inspect `dist/index.html` and confirm at least one `<img>` element references an `ogimage` or `opengraph` URL (i.e. a real social preview image URL is present in the output)
+  - _Requirements: 2.3, 4.1, 4.3_
+
+- [x] 10.5 Confirm `GH_PAT` is absent from `dist/`
+  - Search all files under `dist/` for the literal value of `GH_PAT` and confirm zero matches
+  - This check guards against accidental secret leakage introduced by the new GraphQL implementation
+  - _Requirements: 3.5_

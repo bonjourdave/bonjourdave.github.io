@@ -52,6 +52,18 @@ interface GitHubApiRepo {
   updated_at: string;
 }
 
+// Internal type for raw GraphQL repository nodes
+interface GraphQLRepoNode {
+  name: string;
+  description: string | null;
+  primaryLanguage: { name: string } | null;
+  url: string;
+  openGraphImageUrl: string;
+  stargazerCount: number;
+  isFork: boolean;
+  updatedAt: string;
+}
+
 export async function fetchUserProfile(
   username: string,
   pat: string,
@@ -118,5 +130,75 @@ export async function fetchUserRepos(
       stargazers_count: repo.stargazers_count,
       fork: repo.fork,
       updated_at: repo.updated_at,
+    }));
+}
+
+export async function fetchUserReposGraphQL(
+  username: string,
+  pat: string,
+  limit: number = 12,
+): Promise<GitHubRepo[]> {
+  const query = `
+    query GetUserRepos($login: String!, $first: Int!) {
+      user(login: $login) {
+        repositories(first: $first, orderBy: {field: UPDATED_AT, direction: DESC}, privacy: PUBLIC) {
+          nodes {
+            name
+            description
+            primaryLanguage { name }
+            url
+            openGraphImageUrl
+            stargazerCount
+            isFork
+            updatedAt
+          }
+        }
+      }
+    }
+  `;
+
+  const response = await fetch('https://api.github.com/graphql', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${pat}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ query, variables: { login: username, first: 100 } }),
+  });
+
+  if (!response.ok) {
+    throw new GitHubApiError(
+      `GitHub GraphQL API error fetching repositories: HTTP ${response.status}`,
+      response.status,
+    );
+  }
+
+  const json = (await response.json()) as {
+    data?: { user: { repositories: { nodes: GraphQLRepoNode[] } } };
+    errors?: { message: string }[];
+  };
+
+  if (json.errors?.length) {
+    throw new GitHubApiError(
+      `GitHub GraphQL error: ${json.errors[0].message}`,
+      200,
+    );
+  }
+
+  const portfolioRepoName = `${username}.github.io`;
+  const nodes = json.data!.user.repositories.nodes;
+
+  return nodes
+    .filter((node) => !node.isFork && node.name !== portfolioRepoName)
+    .slice(0, limit)
+    .map((node) => ({
+      name: node.name,
+      description: node.description,
+      language: node.primaryLanguage?.name ?? null,
+      html_url: node.url,
+      social_preview_image_url: node.openGraphImageUrl || null,
+      stargazers_count: node.stargazerCount,
+      fork: node.isFork,
+      updated_at: node.updatedAt,
     }));
 }

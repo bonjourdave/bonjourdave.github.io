@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Bio from '../components/Bio.astro';
 import Gallery from '../components/Gallery.astro';
-import { fetchUserProfile, fetchUserRepos } from '../utils/github.ts';
+import { fetchUserProfile, fetchUserReposGraphQL } from '../utils/github.ts';
 
 const pat = import.meta.env.GH_PAT;
 const username = import.meta.env.PUBLIC_GITHUB_USERNAME;
@@ -22,7 +22,7 @@ if (!username) {
 
 const [user, repos] = await Promise.all([
   fetchUserProfile(username, pat),
-  fetchUserRepos(username, pat),
+  fetchUserReposGraphQL(username, pat),
 ]);
 
 const pageTitle = `${user.name ?? user.login} — Portfolio`;
