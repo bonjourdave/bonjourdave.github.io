@@ -201,7 +201,13 @@ code .
 claude
 
 # Astro dev server (separate terminal tab)
-npm run dev   # → http://localhost:4321
+npm run dev   # → http://localhost:4321 on your host browser
+
+# Note: the dev script must include --host (astro dev --host) in package.json.
+# Without it the server binds to 127.0.0.1 inside the container only and the
+# connection hangs — VSCode port forwarding requires 0.0.0.0 to reach it.
+# If not yet in package.json, use: npm run dev -- --host
+# (the -- separator tells npm to pass --host to astro, not to npm itself)
 ```
 
 ---
