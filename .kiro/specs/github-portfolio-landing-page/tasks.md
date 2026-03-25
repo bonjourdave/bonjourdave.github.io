@@ -57,17 +57,17 @@ Task 1 (foundation)
 
 ---
 
-- [ ] 3. (P) Create the base layout shell
+- [x] 3. (P) Create the base layout shell
   _(Can run in parallel with Task 2 — no shared files or data dependency)_
 
-- [ ] 3.1 Build the HTML document shell
+- [x] 3.1 Build the HTML document shell
   - Implement a layout component that wraps page content in a valid HTML5 document structure
   - Include a configurable page title and meta description driven by props
   - Use semantic landmark elements (`<header>`, `<main>`, `<footer>`) for the top-level page regions
   - Import the global stylesheet so Tailwind utilities apply to all pages
   - _Requirements: 4.4, 5.1, 5.2_
 
-- [ ] 3.2 Add responsive and social meta configuration
+- [x] 3.2 Add responsive and social meta configuration
   - Include `<meta name="viewport" content="width=device-width, initial-scale=1">` for correct mobile scaling
   - Add Open Graph meta tags (title, description, image) when an OG image URL prop is provided
   - Link the favicon from the static assets directory
