@@ -215,3 +215,39 @@ Task 1 (foundation)
   - Search all files under `dist/` for the literal value of `GH_PAT` and confirm zero matches
   - This check guards against accidental secret leakage introduced by the new GraphQL implementation
   - _Requirements: 3.5_
+
+---
+
+- [x] 11. Add owner filtering and collaborations section
+  _(Starts after Task 10 completes — extends the GraphQL data utility and adds a new page section)_
+
+- [x] 11.1 Add `owner_login` field to the `GitHubRepo` interface
+  - Add `owner_login: string` to the `GitHubRepo` interface in `src/utils/github.ts`
+  - _Requirements: 2.10, 8.6_
+
+- [x] 11.2 Update `fetchUserReposGraphQL` to fetch and map `owner.login`
+  - Add `owner { login }` to the GraphQL selection set inside `fetchUserReposGraphQL`
+  - Map `owner.login` to `owner_login` in the returned `GitHubRepo` objects
+  - Note: GitHub's `User.repositories` already returns both owned and collaborator repos by default (`affiliations: ["OWNER", "COLLABORATOR"]`); no query parameter change is required — only the field addition
+  - _Requirements: 2.10, 8.6_
+
+- [x] 11.3 Split fetched repos into owned and collaborator arrays in `src/pages/index.astro`
+  - After the `fetchUserReposGraphQL` call, derive two arrays: `ownedRepos` (where `owner_login === username`) and `collaboratorRepos` (where `owner_login !== username`)
+  - Pass `ownedRepos` to the existing `<Gallery>` component
+  - Pass `collaboratorRepos` to the new `<CollaborationsSection>` component (created in 11.4)
+  - _Requirements: 2.10, 8.1, 8.5_
+
+- [x] 11.4 Create `src/components/CollaborationsSection.astro`
+  - Accept a `repos: GitHubRepo[]` prop
+  - Render nothing (emit no HTML) when `repos.length === 0`
+  - When non-empty, render a `<section>` with a heading (e.g. "Collaborations") and an accessible list of repo name links
+  - Each list item link: repo name as visible text, `href={repo.html_url}`, `target="_blank" rel="noopener noreferrer"`, minimum 44px touch target via padding
+  - Do not render a thumbnail, description, or language badge
+  - Apply dark-mode-aware colors using Tailwind `dark:` variants
+  - _Requirements: 8.1, 8.2, 8.3, 8.4, 8.5_
+
+- [x] 11.5 Build and verify
+  - Run `npm run build` and confirm it exits with code 0
+  - Inspect `dist/index.html` and confirm the main gallery cards only reference repos owned by the configured username
+  - Confirm the collaborations section appears when collaborator repos exist, or is absent when the list is empty
+  - _Requirements: 2.10, 8.1, 8.5_

@@ -33,13 +33,14 @@ The system subject used throughout this document is **Portfolio Site**.
 
 1. The Portfolio Site shall render a project gallery section containing one card per featured repository.
 2. The Portfolio Site shall display each project card with at minimum: the repository name, a short description, the primary language, and a direct link to the repository on GitHub.
-3. Where a repository has a social preview image (Open Graph image) available, the Portfolio Site shall display it as a thumbnail on the project card.
+3. The Portfolio Site build system shall fetch each repository's social preview image URL at build time using the GitHub GraphQL API (the REST API does not expose this field), and display it as a thumbnail on the project card when available.
 4. If a repository has no social preview image, the Portfolio Site shall display a placeholder visual (e.g., a styled block showing the repository name) in the thumbnail slot rather than leaving it empty.
 5. If a repository has no description, the Portfolio Site shall render a placeholder string (e.g., "No description provided") rather than an empty element.
 6. The Portfolio Site shall truncate repository descriptions that exceed approximately three lines of text (≈ 150 characters), appending an ellipsis ("…") so that all cards maintain a consistent height.
 7. The Portfolio Site shall render repository links as accessible anchor elements that open in a new tab with `rel="noopener noreferrer"`.
 8. The Portfolio Site shall display projects in a responsive grid layout that adapts gracefully from mobile (single column) to desktop (multi-column) viewports.
 9. The Portfolio Site build system shall exclude the repository that hosts the portfolio site itself (i.e. the `PUBLIC_GITHUB_USERNAME`.github.io repo) from the project gallery.
+10. The Portfolio Site build system shall restrict the main project gallery to repositories owned by the portfolio owner (i.e. `owner.login === PUBLIC_GITHUB_USERNAME`); repositories where the owner is a third party shall not appear in this section.
 
 ---
 
@@ -114,3 +115,18 @@ The system subject used throughout this document is **Portfolio Site**.
 4. If the `npm run build` command exits with a non-zero code, the CI/CD workflow shall fail and not deploy.
 5. The CI/CD workflow shall run `npm audit --audit-level=high --omit=dev` and fail the build if any high-severity vulnerabilities are found in production dependencies.
 6. The Portfolio Site build system shall require `GH_PAT` and `PUBLIC_GITHUB_USERNAME` to be available as CI secrets at build time.
+
+---
+
+### Requirement 8: Collaborations Section
+
+**Objective:** As a visitor, I want to see repositories the portfolio owner contributes to but does not own, presented separately from their own work, so that I can understand their collaborative activity without it diluting the primary project showcase.
+
+#### Acceptance Criteria
+
+1. The Portfolio Site shall render a distinct collaborations section below the main project gallery, containing one entry per repository where the owner is a third party and the portfolio owner is a collaborator.
+2. The collaborations section shall include a heading that clearly signals lesser ownership (e.g. "Collaborations" or "Open Source Contributions").
+3. Each collaboration entry shall display at minimum the repository name as a link to the GitHub repo.
+4. Collaboration entries shall use a simpler visual treatment than the main project cards — no social preview thumbnail, no description, no language badge is required.
+5. If the portfolio owner has no collaborator repositories, the collaborations section shall be omitted entirely rather than rendered empty.
+6. The Portfolio Site build system shall fetch collaborator repositories using the same GraphQL query used for the main gallery, differentiating owned from non-owned by comparing `owner.login` to `PUBLIC_GITHUB_USERNAME`.

@@ -16,6 +16,7 @@ export interface GitHubRepo {
   stargazers_count: number;
   fork: boolean;
   updated_at: string;
+  owner_login: string;
 }
 
 export class GitHubApiError extends Error {
@@ -62,6 +63,7 @@ interface GraphQLRepoNode {
   stargazerCount: number;
   isFork: boolean;
   updatedAt: string;
+  owner: { login: string };
 }
 
 export async function fetchUserProfile(
@@ -130,6 +132,7 @@ export async function fetchUserRepos(
       stargazers_count: repo.stargazers_count,
       fork: repo.fork,
       updated_at: repo.updated_at,
+      owner_login: username,
     }));
 }
 
@@ -151,6 +154,7 @@ export async function fetchUserReposGraphQL(
             stargazerCount
             isFork
             updatedAt
+            owner { login }
           }
         }
       }
@@ -188,9 +192,10 @@ export async function fetchUserReposGraphQL(
   const portfolioRepoName = `${username}.github.io`;
   const nodes = json.data!.user.repositories.nodes;
 
+  // Exclude forks and the portfolio site itself; keep both owned and collaborator
+  // repos so the caller can split them by owner_login.
   return nodes
     .filter((node) => !node.isFork && node.name !== portfolioRepoName)
-    .slice(0, limit)
     .map((node) => ({
       name: node.name,
       description: node.description,
@@ -200,5 +205,6 @@ export async function fetchUserReposGraphQL(
       stargazers_count: node.stargazerCount,
       fork: node.isFork,
       updated_at: node.updatedAt,
+      owner_login: node.owner.login,
     }));
 }
