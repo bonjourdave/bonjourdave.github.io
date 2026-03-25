@@ -146,6 +146,22 @@ Task 1 (foundation)
 
 ---
 
+- [ ] 9. Enhance project card presentation
+  _(New requirements added post-implementation)_
+
+- [x] 9.1 Add placeholder thumbnail for repos without a social preview image
+  - When `social_preview_image_url` is null, render a styled placeholder block in the same 2:1 aspect-ratio slot
+  - The placeholder shall display the repository name centred over a subtle background so the card has visual weight matching cards with real thumbnails
+  - Apply dark-mode-aware colors using Tailwind's `dark:` variant
+  - _Requirements: 2.4_
+
+- [ ] 9.2 Truncate long descriptions to three lines
+  - Apply CSS `line-clamp-3` (Tailwind utility) to the description paragraph so all cards share a consistent height
+  - No JavaScript required — the truncation is purely presentational via CSS `overflow: hidden` + `-webkit-line-clamp`
+  - _Requirements: 2.6_
+
+---
+
 - [ ] 8. Verify quality and accessibility
   _(Starts after Task 7 completes)_
 

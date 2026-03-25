@@ -17,8 +17,8 @@ const description = repo.description ?? 'No description provided.';
                 hover:border-zinc-400 dark:hover:border-zinc-500
                 transition-colors">
 
-  <!-- Thumbnail — only rendered when a social preview image is available -->
-  {repo.social_preview_image_url && (
+  <!-- Thumbnail — real image when available, styled placeholder otherwise -->
+  {repo.social_preview_image_url ? (
     <img
       src={repo.social_preview_image_url}
       alt={`${repo.name} social preview`}
@@ -26,6 +26,14 @@ const description = repo.description ?? 'No description provided.';
       height="640"
       class="w-full aspect-[2/1] object-cover"
     />
+  ) : (
+    <div class="w-full aspect-[2/1] flex items-center justify-center px-4
+                bg-zinc-100 dark:bg-zinc-700">
+      <span class="text-sm font-medium text-center truncate
+                   text-zinc-400 dark:text-zinc-500">
+        {repo.name}
+      </span>
+    </div>
   )}
 
   <!-- Card body — the anchor wraps the content for a large touch target -->
