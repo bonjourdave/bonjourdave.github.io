@@ -1,5 +1,16 @@
 ---
 // Stub page — full implementation in Task 7
+import Bio from '../components/Bio.astro';
+import type { GitHubUser } from '../utils/github.ts';
+
+const stubUser: GitHubUser = {
+  login: 'bonjourdave',
+  name: 'Dave',
+  bio: 'ML/AI engineer. Building things.',
+  avatar_url: 'https://avatars.githubusercontent.com/u/1',
+  html_url: 'https://github.com/bonjourdave',
+  blog: null,
+};
 ---
 <html lang="en">
   <head>
@@ -8,8 +19,8 @@
     <title>Portfolio</title>
   </head>
   <body class="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100">
-    <main class="min-h-screen p-8">
-      <p>Coming soon.</p>
+    <main class="min-h-screen">
+      <Bio user={stubUser} />
     </main>
   </body>
 </html>

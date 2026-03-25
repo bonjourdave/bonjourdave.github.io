@@ -1,0 +1,80 @@
+---
+import type { GitHubUser } from '../utils/github.ts';
+
+interface Props {
+  user: GitHubUser;
+  links?: Array<{ label: string; href: string }>;
+}
+
+const { user, links = [] } = Astro.props;
+
+// Fall back to login (username) if the display name is not set
+const displayName = user.name ?? user.login;
+
+// Build the full list of social links: GitHub profile first, then optional
+// website/blog, then any extra links passed via props
+const socialLinks: Array<{ label: string; href: string }> = [
+  { label: 'GitHub', href: user.html_url },
+  ...(user.blog ? [{ label: 'Website', href: user.blog }] : []),
+  ...links,
+];
+---
+
+<section class="py-12 px-6">
+  <div class="max-w-4xl mx-auto flex flex-col sm:flex-row gap-8 items-start">
+
+    <!--
+      Profile picture.
+      The bg-zinc-200 / dark:bg-zinc-700 background is the CSS-only fallback:
+      when the image fails to load, the browser renders the <img> element's own
+      background-color instead of a broken icon.
+    -->
+    <img
+      src={user.avatar_url}
+      alt={`${displayName} profile picture`}
+      width="120"
+      height="120"
+      class="w-28 h-28 rounded-full object-cover shrink-0
+             bg-zinc-200 dark:bg-zinc-700"
+    />
+
+    <!-- Bio text and links -->
+    <div class="flex-1 min-w-0">
+      <h1 class="text-3xl font-bold tracking-tight
+                 text-zinc-900 dark:text-white">
+        {displayName}
+      </h1>
+
+      {user.bio && (
+        <p class="mt-3 text-lg leading-relaxed
+                  text-zinc-600 dark:text-zinc-400">
+          {user.bio}
+        </p>
+      )}
+
+      <!-- Social / contact links — min 44×44 px touch targets via py-2.5 px-4 -->
+      {socialLinks.length > 0 && (
+        <ul class="mt-6 flex flex-wrap gap-3 list-none p-0" role="list">
+          {socialLinks.map((link) => (
+            <li>
+              <a
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center min-h-[44px] px-4 py-2.5
+                       rounded-lg text-sm font-medium
+                       bg-zinc-100 dark:bg-zinc-800
+                       text-zinc-700 dark:text-zinc-300
+                       hover:bg-zinc-200 dark:hover:bg-zinc-700
+                       transition-colors"
+              >
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+
+  </div>
+</section>

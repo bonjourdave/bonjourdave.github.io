@@ -75,16 +75,16 @@ Task 1 (foundation)
 
 ---
 
-- [ ] 4. (P) Build the bio section component
+- [x] 4. (P) Build the bio section component
   _(Can start after Tasks 2 and 3 complete; runs in parallel with Task 5 — different component files)_
 
-- [ ] 4.1 Render the owner's profile picture
+- [x] 4.1 Render the owner's profile picture
   - Display the avatar image from the GitHub API at the top of the bio section
   - Provide a styled background-color placeholder in the same dimensions as a fallback when the image does not load — no JavaScript required
   - Include meaningful alt text (owner name or username)
   - _Requirements: 1.2, 1.3, 5.3_
 
-- [ ] 4.2 Render the owner's name, bio summary, and social links
+- [x] 4.2 Render the owner's name, bio summary, and social links
   - Display the owner's display name; fall back to their GitHub username when the display name is null
   - Render the bio text below the name; omit the element if bio is null
   - Display social and contact links as accessible anchor elements that open in a new tab using `target="_blank" rel="noopener noreferrer"`
