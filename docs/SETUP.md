@@ -1,4 +1,4 @@
-# Portfolio — Spec Driven Dev Environment
+# Portfolio — Setup Guide
 
 Personal portfolio landing page built with Astro + Tailwind, deployed to GitHub Pages at `username.github.io`.
 Developed using Claude Code inside a VSCode devcontainer with spec-driven development (SDD).
