@@ -13,12 +13,14 @@ gallery of GitHub projects with short descriptions and links to the actual repos
 **Primary audience:** Anyone landing on the site from a GitHub profile, CV, or link share.
 
 **Stack:**
+
 - Framework: Astro (static output, zero JS by default)
 - Styling: Tailwind CSS v4 via `@tailwindcss/vite` Vite plugin (not the deprecated `@astrojs/tailwind` integration)
 - Data source: GitHub REST API (fetched at build time via `GH_PAT`)
 - Deployment: GitHub Pages at `username.github.io` (auto-deploys on push to `main`)
 
 **Repo layout:**
+
 ```
 src/
   pages/       — Astro pages (index.astro is the single-page entry point)
@@ -113,10 +115,10 @@ Do not batch multiple tasks into one commit.
 
 ## Environment variables
 
-| Variable | Where set | Purpose |
-|---|---|---|
-| `GH_PAT` | Host shell / `.env` / Actions secret | Fine-grained PAT (this repo only): GitHub API access for MCP + build-time repo fetch |
-| `PUBLIC_GITHUB_USERNAME` | `.env` | Your GitHub username (used in Astro data fetching) |
+| Variable                 | Where set                            | Purpose                                                                              |
+| ------------------------ | ------------------------------------ | ------------------------------------------------------------------------------------ |
+| `GH_PAT`                 | Host shell / `.env` / Actions secret | Fine-grained PAT (this repo only): GitHub API access for MCP + build-time repo fetch |
+| `PUBLIC_GITHUB_USERNAME` | `.env`                               | Your GitHub username (used in Astro data fetching)                                   |
 
 `.env` is gitignored. See `.env.example` for the template.
 
@@ -127,6 +129,8 @@ Do not batch multiple tasks into one commit.
 - **github** — Full repo access (issues, PRs, branches, contents). Use this for:
   creating issues from spec tasks, opening PRs, inspecting repo state.
   Verify connection with `/mcp` inside Claude Code.
+- **gh CLI** is installed and authenticated. Use `gh auth setup-git` for git
+  credentials. Do not configure manual credential helpers with GH_PAT.
 
 ---
 
@@ -146,6 +150,7 @@ GitHub Pages source must be set to "GitHub Actions" in repo Settings → Pages.
 ## Steering documents
 
 Detailed context lives in `.claude/steering/`:
+
 - `product.md` — what the product is and who it's for (fill this in early)
 - `tech.md` — technology decisions and constraints
 - `structure.md` — file/folder conventions and component inventory
